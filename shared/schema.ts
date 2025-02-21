@@ -11,7 +11,7 @@ export const waitlist = pgTable("waitlist", {
 export const insertWaitlistSchema = createInsertSchema(waitlist)
   .pick({ email: true })
   .extend({
-    email: z.string().email("Please enter a valid email address"),
+    email: z.string().email("Пожалуйста, введите корректный email адрес"),
   });
 
 export type InsertWaitlist = z.infer<typeof insertWaitlistSchema>;

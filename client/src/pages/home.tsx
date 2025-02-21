@@ -25,15 +25,15 @@ export default function Home() {
     },
     onSuccess: () => {
       toast({
-        title: "Success!",
-        description: "You've been added to the waitlist.",
+        title: "Успех!",
+        description: "Вы добавлены в список ожидания.",
       });
       form.reset();
     },
     onError: (error: Error) => {
       toast({
         variant: "destructive",
-        title: "Error",
+        title: "Ошибка",
         description: error.message,
       });
     },
@@ -49,10 +49,10 @@ export default function Home() {
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-6">
-            The Next Big Thing
+            Следующий Большой Проект
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Join the waitlist for early access to our revolutionary product that will change the way you work.
+            Присоединяйтесь к списку ожидания, чтобы получить ранний доступ к нашему революционному продукту, который изменит ваш способ работы.
           </p>
         </motion.div>
 
@@ -74,7 +74,7 @@ export default function Home() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Enter your email"
+                        placeholder="Введите ваш email"
                         type="email"
                         {...field}
                       />
@@ -87,7 +87,7 @@ export default function Home() {
                 className="w-full"
                 disabled={mutation.isPending}
               >
-                {mutation.isPending ? "Joining..." : "Join Waitlist"}
+                {mutation.isPending ? "Подождите..." : "Присоединиться к списку ожидания"}
               </Button>
             </form>
           </Form>
@@ -120,20 +120,20 @@ import { Rocket, Shield, Zap } from "lucide-react";
 const features = [
   {
     icon: Rocket,
-    title: "Lightning Fast",
+    title: "Молниеносная Скорость",
     description:
-      "Experience unprecedented speed and efficiency with our cutting-edge technology.",
+      "Испытайте беспрецедентную скорость и эффективность с нашей передовой технологией.",
   },
   {
     icon: Shield,
-    title: "Secure by Design",
+    title: "Безопасность от Природы",
     description:
-      "Your data is protected with enterprise-grade security and encryption.",
+      "Ваши данные защищены корпоративным уровнем безопасности и шифрования.",
   },
   {
     icon: Zap,
-    title: "Powerful Features",
+    title: "Мощные Функции",
     description:
-      "Access a suite of powerful tools designed to enhance your workflow.",
+      "Получите доступ к набору мощных инструментов, разработанных для улучшения вашего рабочего процесса.",
   },
 ];

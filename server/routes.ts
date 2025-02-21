@@ -8,11 +8,11 @@ export async function registerRoutes(app: Express) {
   app.post("/api/waitlist", async (req, res) => {
     try {
       const data = insertWaitlistSchema.parse(req.body);
-      
+
       const exists = await storage.isEmailInWaitlist(data.email);
       if (exists) {
         return res.status(400).json({ 
-          message: "This email is already on the waitlist" 
+          message: "Этот email уже есть в списке ожидания" 
         });
       }
 
@@ -25,7 +25,7 @@ export async function registerRoutes(app: Express) {
         });
       } else {
         res.status(500).json({ 
-          message: "An unexpected error occurred" 
+          message: "Произошла непредвиденная ошибка" 
         });
       }
     }
