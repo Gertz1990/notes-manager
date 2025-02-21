@@ -9,13 +9,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { insertNoteSchema, type Note, type InsertNote } from "@shared/schema";
-import { Loader2, Pencil, Trash } from "lucide-react";
+import { Loader2, Pencil, Trash, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Notes() {
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const { toast } = useToast();
+  const { logoutMutation } = useAuth();
 
   const { data: notes, isLoading } = useQuery<Note[]>({
     queryKey: ["/api/notes"],
@@ -66,7 +68,21 @@ export default function Notes() {
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Мои заметки</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold">Мои заметки</h1>
+          <Button 
+            variant="outline" 
+            onClick={() => logoutMutation.mutate()} 
+            disabled={logoutMutation.isPending}
+          >
+            {logoutMutation.isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            ) : (
+              <LogOut className="h-4 w-4 mr-2" />
+            )}
+            Выйти
+          </Button>
+        </div>
 
         <div className="grid gap-8">
           <Card>
