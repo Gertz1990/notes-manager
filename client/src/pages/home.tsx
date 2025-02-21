@@ -1,118 +1,21 @@
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { insertWaitlistSchema, type InsertWaitlist } from "@shared/schema";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { useLocation } from "wouter";
+import { useAuth } from "@/hooks/use-auth";
+import { useEffect } from "react";
 
 export default function Home() {
-  const { toast } = useToast();
-  const form = useForm<InsertWaitlist>({
-    resolver: zodResolver(insertWaitlistSchema),
-    defaultValues: {
-      email: "",
-    },
-  });
+  const [, setLocation] = useLocation();
+  const { user } = useAuth();
 
-  const mutation = useMutation({
-    mutationFn: async (data: InsertWaitlist) => {
-      const res = await apiRequest("POST", "/api/waitlist", data);
-      return res.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Успех!",
-        description: "Вы добавлены в список ожидания.",
-      });
-      form.reset();
-    },
-    onError: (error: Error) => {
-      toast({
-        variant: "destructive",
-        title: "Ошибка",
-        description: error.message,
-      });
-    },
-  });
+  useEffect(() => {
+    if (user) {
+      setLocation("/notes");
+    } else {
+      setLocation("/auth");
+    }
+  }, [user, setLocation]);
 
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-16 md:py-24">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-6">
-            Следующий Большой Проект
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Присоединяйтесь к списку ожидания, чтобы получить ранний доступ к нашему революционному продукту, который изменит ваш способ работы.
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-md mx-auto"
-        >
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
-              className="space-y-4"
-            >
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="Введите ваш email"
-                        type="email"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={mutation.isPending}
-              >
-                {mutation.isPending ? "Подождите..." : "Присоединиться к списку ожидания"}
-              </Button>
-            </form>
-          </Form>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-24 grid md:grid-cols-3 gap-8"
-        >
-          {features.map((feature, i) => (
-            <div
-              key={i}
-              className="p-6 rounded-lg border bg-card text-card-foreground"
-            >
-              <feature.icon className="h-12 w-12 text-primary mb-4" />
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground">{feature.description}</p>
-            </div>
-          ))}
-        </motion.div>
-      </div>
-    </div>
-  );
+  return null;
 }
 
 import { Rocket, Shield, Zap } from "lucide-react";
